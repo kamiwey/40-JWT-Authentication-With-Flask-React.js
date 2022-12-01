@@ -4,7 +4,7 @@ import { Link, Navigate, useNavigate} from "react-router-dom";
 
 import { Context } from "../store/appContext";
 
-const Privated = () => {
+const Private = () => {
     const {store, actions} = useContext(Context)
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
@@ -32,4 +32,4 @@ const Privated = () => {
 
 };
 
-export default Privated;
+export default Private;

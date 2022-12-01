@@ -73,7 +73,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		  
 		  //if (tok == getStore().token) {
 			await fetch(
-			  "https://3001-kamiwey-40jwtauthentica-ui3amu810w2.ws-eu77.gitpod.io/privated",
+			  "https://3001-kamiwey-40jwtauthentica-ui3amu810w2.ws-eu77.gitpod.io/private",
 			  {
 				method: "GET",
 				headers: {

@@ -9,7 +9,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   
-  useEffect(()=>{if (store.auth===true){navigate("/privated")} },[store.auth])
+  useEffect(()=>{if (store.auth===true){navigate("/private")} },[store.auth])
 
   return (
       <div>
