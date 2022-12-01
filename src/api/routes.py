@@ -48,7 +48,7 @@ def create_token():
 #               PRIVATED JWT GET
 #---------------------------------------------------------------------------------------------------
 
-@api.route("/privated", methods=["GET"])
+@api.route("/private", methods=["GET"])
 @jwt_required()
 def protected():
 

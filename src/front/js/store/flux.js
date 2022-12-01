@@ -6,30 +6,37 @@ const getState = ({ getStore, getActions, setStore }) => {
 		auth: false,
 	  },
 	  actions: {
-		// Use getActions to call a function within a fuction
+
+//-----------------------------------------------------------------------------------------------------------------------------
+//											 SIGNUP
+//-----------------------------------------------------------------------------------------------------------------------------
   
-		signup: async (infouserpassw) => {
+		signup: async (signupData) => {
 		  await fetch(
 			"https://3001-kamiwey-40jwtauthentica-ui3amu810w2.ws-eu77.gitpod.io/signup",
 			{
 			  method: "POST",
-			  body: JSON.stringify(infouserpassw),
+			  body: JSON.stringify(signupData),
 			  headers: { "Content-Type": "application/json" },
 			}
 		  ).then((resp) => {
 			if (resp.ok) {
-			  console.log("registro OK");
+			  console.log("Signup OK");
 			}
 		  });
 		},
   
-		login: (infouserpass) => {
+//-----------------------------------------------------------------------------------------------------------------------------
+//											LOGIN
+//-----------------------------------------------------------------------------------------------------------------------------
+
+		login: (loginInfo) => {
 		  const response = fetch(
 			"https://3001-kamiwey-40jwtauthentica-ui3amu810w2.ws-eu77.gitpod.io/token",
 			{
 			  //mode: 'no-cors',
 			  method: "POST",
-			  body: JSON.stringify(infouserpass),
+			  body: JSON.stringify(loginInfo),
 			  headers: { "Content-Type": "application/json" },
 			}
 		  )
@@ -39,19 +46,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 			}
 			else{
 			  setStore({ auth: true });
-			  const { auth } = getStore();
-				  console.log("auth1", auth)
-			  
+			  const { auth } = getStore();				  			  
 			}
-			return response.json()
-			// Aquí es donde pones lo que quieres hacer con la respuesta.
+			return response.json()			
 		})
 		.then(data =>{localStorage.setItem("token", data.token); })
 		.catch();
 		},
+		
+//-----------------------------------------------------------------------------------------------------------------------------
+//											LOGOUT
+//-----------------------------------------------------------------------------------------------------------------------------		
+		
+		logout: ()=>{
+	  		const { auth } = getStore();
+		  	localStorage.removeItem("token")
+		  	setStore({auth: false})
+		},
   
+//-----------------------------------------------------------------------------------------------------------------------------
+//											PRIVATE
+//-----------------------------------------------------------------------------------------------------------------------------
+
 		private: async () => {
-		  let tok = localStorage.getItem("token");
+		  let myToken = localStorage.getItem("token");
 		  
 		  //if (tok == getStore().token) {
 			await fetch(
@@ -60,36 +78,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 				method: "GET",
 				headers: {
 				  "Content-Type": "application/json",
-				  Authorization: "Bearer " + tok,
+				  Authorization: "Bearer " + myToken,
 				},
 			  }
 			).then((res) => {
 			  if (res.status == 200) {
-				console.log("Todo bien con el fetch en private");
+				console.log("OK");
 				const { auth } = getStore();
-				console.log("auth4", auth)
 				setStore({ auth: true });
 			  } else {
-				console.log(
-				  "Algo ha ido mal con el token y el require en el private Fetch"
-				);
-				// return res.json()
+				console.log("Error");
 			  }
 			});
-		  // } else {
-		  //   return "Validation error flux 97";
-		  // }
 		},
   
+
+//-----------------------------------------------------------------------------------------------------------------------------
+//											EXAMPLE FUNCTION
+//-----------------------------------------------------------------------------------------------------------------------------
+
 		exampleFunction: () => {
 		  getActions().changeColor(0, "green");
-		},
-  
-		logout: ()=>{
-	  const { auth } = getStore();
-		  localStorage.removeItem("token")
-		  setStore({auth: false})
-	  console.log("auth3", auth)
 		},
   
 		getMessage: async () => {

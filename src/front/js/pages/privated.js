@@ -4,7 +4,7 @@ import { Link, Navigate, useNavigate} from "react-router-dom";
 
 import { Context } from "../store/appContext";
 
-export const Privated = () => {
+const Privated = () => {
     const {store, actions} = useContext(Context)
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
@@ -16,11 +16,10 @@ export const Privated = () => {
     return (
             <>
                 {token && store.auth === true? 
-                    <div className="text-center"> 
-                        <h1>Página personal que ha realizado la autentificacion jwt_require</h1>
-                        {/* <Link className="btn btn-primary" to="/privated">Home</Link>  */}
+                    <div className="text-center mt-5"> 
+                        <h1>Login Success!! </h1>
                     
-                          <Link to="/" type="submit" className="btn btn-primary" onClick={() => {
+                          <Link to="/" type="submit" className="btn btn-primary mt-3" onClick={() => {
                             actions.logout();
                          }}>
                          Logout
@@ -32,3 +31,5 @@ export const Privated = () => {
         )
 
 };
+
+export default Privated;
