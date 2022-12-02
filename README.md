@@ -1,99 +1,84 @@
-# WebApp boilerplate with React JS and Flask API
+# JWT Authentication With Flask & React.js
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#https://github.com/4GeeksAcademy/react-flask-hello.git)
+Almost every website in the world has user authentication, in this project you have to implement user authentication using the Python Flask framework for building a backend REST API and React.js and sessionStorage API for the front end web application.
 
-> Documentation: https://start.4geeksacademy.com/
 
-<p align="center">
-<a href="https://www.loom.com/share/f37c6838b3f1496c95111e515e83dd9b"><img src="https://github.com/4GeeksAcademy/flask-rest-hello/blob/main/docs/assets/how-to.png?raw=true?raw=true" /></a>
-</p>
+## 🗒️ Instructions
 
-- React.js front end and python/flask backend for your web application.
-- Extensive documentation [here](https://start.4geeksacademy.com/).
-- Integrated with Pipenv for package managing.
-- Fast deloyment to heroku [in just a few steps here](https://start.4geeksacademy.com/backend/deploy-heroku-posgres).
-- Use of .env file.
-- SQLAlchemy integration for database abstraction.
+Implement an authentication system with the following parts:
 
-### Styles
+1. **Signup**: The user must be able to pick its email, any password and submit the form, a new user must be created in the database and the user must be redirected to the login form afterwards.
+2. **Login**: The user fills out its email and password and it's redirected to the private dashboard after successfull authentication.
+3. **Validation**: Any page considered "private" must always validate that the current user is valid, if not, the page must redirect the user back to login.
+4. **Logout**: Any moment the user must be able to press "logout" in the navbar and it will get redirected back to the login path.
 
-You can update the `styles/index.scss` or create new `.scss` files inside `styles/` and import them into your current scss or js files depending on your needs.
+At least the following pages and react components must be implemented into the project:
 
-### Components
+| Path      | Component   | Functionality                                                     |
+| --------- | ----------- | ----------------------------------------------------------------- |
+| `/signup` | `<Signup>`  | Renders the signup form                                           |
+| `/login`  | `<Login>`   | Renders the login form                                            |
+| `/private`| `<Private>` | Validates that only authenticated users and render this component |
 
-Add more files into your `./src/js/components` or styles folder as you need them and import them into your current files as needed.
+## 🌱 How to start coding this project:
 
-💡Note: There is an example using the Context API inside `views/demo.js`;
+Do not clone this repository.
 
-### Views (Components)
+1. The first step to start coding is cloning the [React.js + Flask API boilerplate](https://github.com/4GeeksAcademy/react-flask-hello) on your local computer or opening it using gitpod.
 
-Add more files into your `./src/js/views` and import them in `./src/js/layout.jsx`.
+a) If using Gitpod (recommended) you can clone the boilerplate by [clicking here](https://gitpod.io#https://github.com/4GeeksAcademy/react-flask-hello).
 
-### Context
+b) If working locally type the following command from your command line: `git clone https://github.com/4GeeksAcademy/react-flask-hello`.
 
-This boilerplate comes with a centralized general Context API. The file `./src/js/store/flux.js` has a base structure for the store, we encourage you to change it and adapt it to your needs.
+💡 Remember to create a new repository, update the remote (`git remote set-url origin <your new url>`), and upload the code to your new repository using `add`, `commit` and `push`.
 
-React Context [docs](https://reactjs.org/docs/context.html)
-BreathCode Lesson [view](https://content.breatheco.de/lesson/react-hooks-explained)
+## More details about the authentication:
 
-The `Provider` is already set. You can consume from any component using the useContext hook to get the `store` and `actions` from the Context. Check `/views/demo.js` to see a demo.
+Usually an authentication system is implemented in 4 parts:
 
-```jsx
-import { Context } from "../store/appContext";
-const MyComponentSuper = () => {
-    //here you use useContext to get store and actions
-    const { store, actions } = useContext(Context);
-    return <div>{/* you can use your actions or store inside the html */}</div>;
-};
-```
+![Authentication Diagram](https://github.com/breatheco-de/jwt-authentication-with-flask-react/blob/main/.learn/login_diagram.jpeg?raw=true)
 
-### Back-End Manual Installation:
+### User signup
 
-It is recomended to install the backend first, make sure you have Python 3.8, Pipenv and a database engine (Posgress recomended)
+At the beginning of every application that are not users or tokens, so the first step that makes sense to build is user signup.
 
-1. Install the python packages: `$ pipenv install`
-2. Create a .env file based on the .env.example: `$ cp .env.example .env`
-3. Install your database engine and create your database, depending on your database you have to create a DATABASE_URL variable with one of the possible values, make sure yo replace the valudes with your database information:
+1. The user navigates to the `/signup` path.
+2. The React.js application (probably using the React Router library) will detect the route `/signup` and match with its corresponding React.js page component that will take care of rendering the signup HTML.
+3. The user picks and writes an email and password and clicks submit.
+4. The React.js page is listening to the onSubmit event, it gets triggered and the handleSubmit function fetches the email and password to the backend Python Flask API, probably doing a `POST /token` request with the email and password on the body payload.
 
-| Engine    | DATABASE_URL                                        |
-| --------- | --------------------------------------------------- |
-| SQLite    | sqlite:////test.db                                  |
-| MySQL     | mysql://username:password@localhost:port/example    |
-| Postgress | postgres://username:password@localhost:5432/example |
+### User login (start session)
 
-4. Migrate the migrations: `$ pipenv run migrate` (skip if you have not made changes to the models on the `./src/api/models.py`)
-5. Run the migrations: `$ pipenv run upgrade`
-6. Run the application: `$ pipenv run start`
+This part of the process occurs only when new tokens have to be generated.
 
-### Backend Populate Table Users
+1. The user lands in the myapplication.com/login path.
+2. The React.js application (probably using the React Router library) will detect the `/login` path and match it with its corresponding React.js page component, this page will take care of rendering the login form.
+3. The user fills the login form and submits it.
+4. The page is listening (waiting) for the form sumbit event to trigger, and it finally triggers because the user submit the form.
+5. The page now retrieves the username and password information and fetch (POST) that data to the API.
+6. The API validates that the username and password are correct and returns a `token` object.
+7. The front-end application saves that token in the sessionStorage.
+8. The front end application redirects to the `/private`.
 
-To insert test users in the database execute the following command:
+### User logout (end session)
 
-```sh
-$ flask insert-test-users 5
-```
+This process occurs when the user desires to logout.
 
-And you will see the following message:
+1. Normally there is a button to log out somewhere in your application.
+2. The user press that button and the onClick event handler is called.
+3. The front-end application removes the token from the sessionStorage.
+4. The front-end application redirects to the home page (public).
 
-```
-  Creating test users
-  test_user1@test.com created.
-  test_user2@test.com created.
-  test_user3@test.com created.
-  test_user4@test.com created.
-  test_user5@test.com created.
-  Users created successfully!
-```
+### Token Validation 
 
-To update with all yours tables you can edit the file app.py and go to the line 80 to insert the code to populate others tables
+Any user can just type `/private` to attempt visiting a private page, that is why we need to implement a validation that prevents the anonymous users to see the content of this page, and we must redirect the user to `/login` or any other **public** page. This is usually how the process goes:
 
-### Front-End Manual Installation:
+1. The user types any private URL, for example: myapplication.com/private
+2. The React.js application (probably using the React Router library) will detect the route `/private` and match with its corresponding React.js page component that will take care of rendering the HTML.
+3. Before rendering the HTML -and only because this is a private route- the component must verify that the sessionStorage contains the authenticated token, you normally would do that in the useEffect (component did mount) because you want to do it very early during the application loading.
+4. If sessionStorage 👎 **does not** have the token, the current user is not considered to be logged in and the component must redirect to the login view.
+5. If the sessionStorage 👍 does contain the token, the current user is successfully logged in and the rest of the `/private` view component is loaded.
 
--   Make sure you are using node version 14+ and that you have already successfully installed and runned the backend.
 
-1. Install the packages: `$ npm install`
-2. Start coding! start the webpack dev server `$ npm run start`
 
-## Publish your website!
 
-This boilerplate it's 100% read to deploy with Render.com and Herkou in a matter of minutes. Please read the [official documentation about it](https://start.4geeksacademy.com/deploy).
