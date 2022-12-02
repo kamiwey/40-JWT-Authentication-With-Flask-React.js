@@ -19,7 +19,7 @@ const Signup = () => {
                     <input
                         type="email"
                         className="form-control"
-                        placeholder="Escriba su correo electrónico"
+                        placeholder="Add Email"
                         value={email}
                         onChange={(e) => {
                         setEmail(e.target.value);
@@ -34,7 +34,7 @@ const Signup = () => {
                     <input
                         type="password"
                         className="form-control"
-                        placeholder="Por favor, escriba su contraseña"
+                        placeholder="Add Password"
                         value={password}
                         onChange={(e) => {
                         setPassword(e.target.value);
